@@ -98,7 +98,9 @@ class DroneNetwork:
         connections: list[Connection],
     ) -> None:
         self.nb_drones: int = nb_drones
-        self.zones: list[Zone] = zones
+        self.org_zones: list[Zone] = zones
+        self.zones: list[Zone] = [zone for zone in zones if not zone.blocked]
+        self.org_connections: list[Connection] = connections
         self.connections: list[Connection] = self._repair_conns(connections)
         self.start: Zone = self._hub(ZoneKind.ST)
         self.end: Zone = self._hub(ZoneKind.END)
@@ -120,12 +122,15 @@ class DroneNetwork:
     @staticmethod
     def _repair_conns(connections: list[Connection]) -> list[Connection]:
         """Remove falsely high connection capacities."""
-        conns = connections[:]
-        for con in conns:
+        conns = []
+        for con in connections:
+            if con.a.blocked or con.b.blocked:
+                continue
             if con.a.cap < con.cap:
                 con.cap = con.a.cap
             if con.b.cap < con.cap:
                 con.cap = con.b.cap
+            conns.append(con)
         return conns
 
     def links_of(self, zone: Zone) -> list[Connection]:
