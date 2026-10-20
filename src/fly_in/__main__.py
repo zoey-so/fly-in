@@ -14,7 +14,8 @@ def run() -> None:
     parser.add_argument("map_file", type=Path, help="Path to the map file")
     parser.add_argument("-gui", action="store_true", help="Run with GUI")
     args = parser.parse_args()
-    if not args.map_file.exists() or not args.map_file.is_file():
+    map_file: Path = args.map_file
+    if not map_file.exists() or not map_file.is_file():
         raise FlyInError(f"Map file does not exist: {args.map_file}") from None
     mp = MapParser()
     net = mp.make_network(args.map_file)
@@ -27,7 +28,7 @@ def run() -> None:
         try:
             os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
             from .viewer import Viewer
-            vr = Viewer(net, sim.turns, plan, args.map_file.stem)
+            vr = Viewer(net, sim.turns, plan, map_file.stem)
             vr.run()
         except (ModuleNotFoundError, ImportError):
             raise FlyInError(
@@ -41,7 +42,7 @@ def main() -> None:
         print(e, file=sys.stderr)
         sys.exit(1)
     except KeyboardInterrupt:
-        print("\nExecution interrupted by user.")
+        print("\nExecution interrupted by user.", file=sys.stderr)
         sys.exit(130)
     except Exception as e:
         print(f"Unexpected error: {e!r}", file=sys.stderr)

@@ -44,13 +44,15 @@ class Palette:
         5: "violet"
     }
 
+    _LCD = list(COLOR_DICT)
+
     def zone(self, key: str, name: str, mod: float) -> RGB:
         key = key.lower() if key else name.lower()
         if key == "rainbow":
             key = self._RNBW[int(mod * 10) % 6]
         elif key not in COLOR_DICT:
             i = sum(map(ord, key)) % len(COLOR_DICT)
-            key = list(COLOR_DICT)[i]
+            key = self._LCD[i]
         return COLOR_DICT[key]
 
     def drone(self, drone_id: int) -> RGB:
@@ -285,10 +287,12 @@ class Viewer:
             prev_turn: Turn | None, prog: float) -> None:
         centre = layout.point(zone)
         radius = layout.radius
-        color = self._palette.zone(zone.color, zone.name,
-                                   (self._frame % self.FPS) / self.FPS)
+        color = self._palette.zone(
+            zone.color,
+            zone.name,
+            (self._frame % (self.FPS * 6)) / (self.FPS * 6))
         if not prev_turn:
-            count = 0
+            count = self._net.nb_drones if zone == self._net.start else 0
         elif prog >= 1:
             count = turn.z_occup.get(zone, 0)
         else:
@@ -368,7 +372,7 @@ class Viewer:
             homed = prev_turn.z_occup.get(self._net.end, 0)
         stats = (
             f"Turn {turn.turn_n}/{len(self._turns)}  "
-            f"            Home {homed}/{len(self._turns)}"
+            f"            Home {homed}/{self._net.nb_drones}"
         )
         self._text(
             screen, stats, (width // 2, 20), 22, THEME["TEXT"], "midtop")
