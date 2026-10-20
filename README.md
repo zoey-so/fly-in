@@ -339,6 +339,7 @@ FlyInError: no path links start_hub with end_hub
 **Claude (Anthropic):**
 
 - **Code review:**
+  - making test maps in `maps/addons/`
   - finding a major bug in `Planner._schedule` (launching on every lane each turn)
   - minor problems (printing one of the parser's warnings to standard output, building list(COLOR_DICT) on every frame)
 - **Documentation:** drafting this README.

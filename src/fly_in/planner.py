@@ -50,6 +50,7 @@ class Planner:
     """Planner translates the DroneNetwork into residual graph,
     finds best paths using spfa and stops when no more rewarding
     augumentation is possible."""
+
     def __init__(self, network: DroneNetwork) -> None:
         """_node_zone - list of zones,
                 the indexes becomes int vertices in graph

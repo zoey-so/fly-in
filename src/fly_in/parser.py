@@ -10,6 +10,8 @@ END = ZoneKind.END
 
 
 class MapParser:
+    """Parser for the map file format."""
+
     def __init__(self) -> None:
         self._reset()
 
@@ -140,7 +142,7 @@ class MapParser:
             elif k == "max_drones":
                 args["cap"] = self._posint(v, l_n, k)
             else:
-                print(f"Map parsing: Unknown key {k} on line {l_n}, "
+                print(f"Map parsing: Unknown key '{k}' on line {l_n}, "
                       "skipping ...", file=sys.stderr)
         return args
 
@@ -172,7 +174,7 @@ class MapParser:
             if not (s.startswith('[') and s.endswith(']')):
                 raise ParseError(
                     l_n,
-                    f"Incorrect value after connection definition: '{s}."
+                    f"Incorrect value after connection definition: '{s}'."
                 )
             for pair in s[1:-1].split():
                 try:
@@ -180,7 +182,7 @@ class MapParser:
                 except ValueError:
                     raise ParseError(
                         l_n,
-                        f"Metadata format: 'key=value', got: {pair}"
+                        f"Metadata format: 'key=value', got: '{pair}'"
                     )
                 if k == "max_link_capacity":
                     args["cap"] = self._posint(v, l_n, k)

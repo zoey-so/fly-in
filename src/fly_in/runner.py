@@ -50,6 +50,8 @@ class Turn:
 
 
 class Simulator:
+    """Simulator runs a flight plan on a drone network."""
+
     def __init__(self, network: DroneNetwork, plan: FlightPlan) -> None:
         self._network = network
         self._plan = plan
