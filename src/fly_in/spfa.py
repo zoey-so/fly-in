@@ -1,3 +1,7 @@
+"""
+Shortest Path Faster Algorithm (SPFA)
+implementation for min-cost max-flow.
+"""
 from collections import deque
 from dataclasses import dataclass
 
@@ -102,8 +106,9 @@ class FlowNetwork:
         node = sink
         while node != source:
             step = via[node]
-            steps.append(step)
-            node = step[0]
+            if step is not None:
+                steps.append(step)
+                node = step[0]
         steps.reverse()
         return steps
 

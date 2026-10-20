@@ -1,3 +1,4 @@
+"""Flight plan generator for drone networks."""
 from dataclasses import dataclass
 
 from .errors import UnsolvableMapError
@@ -132,7 +133,7 @@ class Planner:
                     path.append(zone)
             rates[tuple(path)] = rates.get(tuple(path), 0) + amount
         costs = {path: self._path_cost(path) for path in rates}
-        ordered = sorted(rates, key=lambda path: (costs[path], path))
+        ordered = sorted(rates, key=lambda path: costs[path])
         return [
             FlightPath(path, costs[path].turns, rates[path])
             for path in ordered

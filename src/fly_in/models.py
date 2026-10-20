@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import StrEnum
 
+from .errors import UnsolvableMapError
+
 
 class ZoneType(StrEnum):
     N = "normal"
@@ -50,22 +52,22 @@ class Zone:
     x: int
     y: int
     kind: ZoneKind = ZoneKind.HUB
-    _type: ZoneType = ZoneType.N
-    color: str | None = None
+    type_: ZoneType = ZoneType.N
+    color: str = ""
     cap: int = 1
 
     @property
-    def unlimited(self) -> bool:
+    def liminal(self) -> bool:
         return self.kind is not ZoneKind.HUB
 
     @property
     def blocked(self) -> bool:
-        return self._type is ZoneType.B
+        return self.type_ is ZoneType.B
 
     @property
     def entry_cost(self) -> Cost:
-        bonus = -1 if self._type is ZoneType.P else 0
-        return Cost(self._type.entry_turns, bonus)
+        bonus = -1 if self.type_ is ZoneType.P else 0
+        return Cost(self.type_.entry_turns, bonus)
 
 
 @dataclass(frozen=True)
@@ -94,44 +96,36 @@ class DroneNetwork:
     def __init__(
         self,
         nb_drones: int,
-        zones: set[Zone],
+        zones: list[Zone],
         connections: list[Connection],
     ) -> None:
         self.nb_drones: int = nb_drones
         self.org_zones: list[Zone] = zones
         self.zones: list[Zone] = [zone for zone in zones if not zone.blocked]
         self.org_connections: list[Connection] = connections
-        self.connections: list[Connection] = self._repair_conns(connections)
+        self.connections: list[Connection] = [
+            c for c in connections if not (c.a.blocked or c.b.blocked)
+        ]
         self.start: Zone = self._hub(ZoneKind.ST)
         self.end: Zone = self._hub(ZoneKind.END)
         self._adjacent: dict[Zone, list[Connection]] = {
             zone: [] for zone in zones
         }
         self._links: dict[frozenset[Zone], Connection] = {}
-        for link in connections:
+        for link in self.connections:
             self._adjacent[link.a].append(link)
             self._adjacent[link.b].append(link)
             self._links[frozenset((link.a, link.b))] = link
 
-    def _hub(self, kind: ZoneKind) -> str:
+        if any(z not in self.zones for z in [self.start, self.end]):
+            raise UnsolvableMapError("end_hub or start_hub is blocked.")
+
+    def _hub(self, kind: ZoneKind) -> Zone:
         """Just to set start and end zone"""
-        for zone in self.zones:
+        for zone in self.org_zones:
             if zone.kind is kind:
                 return zone
-
-    @staticmethod
-    def _repair_conns(connections: list[Connection]) -> list[Connection]:
-        """Remove falsely high connection capacities."""
-        conns = []
-        for con in connections:
-            if con.a.blocked or con.b.blocked:
-                continue
-            if con.a.cap < con.cap:
-                con.cap = con.a.cap
-            if con.b.cap < con.cap:
-                con.cap = con.b.cap
-            conns.append(con)
-        return conns
+        raise ValueError(f"no zone is {kind}")
 
     def links_of(self, zone: Zone) -> list[Connection]:
         """Return every connection from zone."""

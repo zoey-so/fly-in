@@ -134,14 +134,14 @@ class MapParser:
                         f"{ZoneType._value2member_map_.keys()}"
                         f", got: {v}"
                     )
-                args["_type"] = ZoneType(v)
+                args["type_"] = ZoneType(v)
             elif k == "color":
                 args["color"] = v
             elif k == "max_drones":
                 args["cap"] = self._posint(v, l_n, k)
             else:
                 print(f"Map parsing: Unknown key {k} on line {l_n}, "
-                      "skipping ...", sys.stderr)
+                      "skipping ...", file=sys.stderr)
         return args
 
     def _parse_connection(self, s: str, l_n: int):
