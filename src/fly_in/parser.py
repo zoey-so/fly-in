@@ -10,7 +10,7 @@ END = ZoneKind.END
 
 
 class MapParser:
-    def __init__(self):
+    def __init__(self) -> None:
         self._reset()
 
     def _reset(self) -> None:
@@ -65,7 +65,7 @@ class MapParser:
             self._conns
         )
 
-    def _parse_zone(self, hub: ZoneKind, s: str, l_n: int):
+    def _parse_zone(self, hub: ZoneKind, s: str, l_n: int) -> None:
         args: dict[str, Any] = {}
         if (self._st and hub == ST) or (self._end and hub == END):
             raise ParseError(
@@ -144,7 +144,7 @@ class MapParser:
                       "skipping ...", file=sys.stderr)
         return args
 
-    def _parse_connection(self, s: str, l_n: int):
+    def _parse_connection(self, s: str, l_n: int) -> None:
         args: dict[str, Any] = {}
         try:
             con, *rest = s.split(maxsplit=1)

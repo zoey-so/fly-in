@@ -354,7 +354,7 @@ class Viewer:
                 screen, zone.name, above, 15, THEME["TEXT"], "midbottom")
 
     def _draw_header(self, screen: pygame.Surface, width: int,
-                     turn: Turn, prev_turn: Turn, prog: float) -> None:
+                     turn: Turn, prev_turn: Turn | None, prog: float) -> None:
         pygame.draw.rect(screen, THEME["PANEL"], (0, 0, width, self.TOP))
         pygame.draw.rect(
             screen, THEME["PROG"], (0, self.TOP - 10, width * prog, 10))

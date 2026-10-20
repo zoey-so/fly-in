@@ -9,7 +9,7 @@ import argparse
 from pathlib import Path
 
 
-def run():
+def run() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("map_file", type=Path, help="Path to the map file")
     parser.add_argument("-gui", action="store_true", help="Run with GUI")
