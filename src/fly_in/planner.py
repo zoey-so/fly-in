@@ -163,21 +163,24 @@ class Planner:
         self, paths: list[FlightPath], turns: int
     ) -> tuple[DronePlan, ...]:
         """create plan for every drone."""
-        slots: list[tuple[int, FlightPath, int]] = []
+        slots: list[tuple[int, int, int]] = []
         missing = self._network.nb_drones
-        for i in range(1, turns + 1):
-            for path in paths:
-                nb = min(path.flow, missing)
-                slots.append((i, path, nb))
-                missing -= nb
-                if missing == 0:
-                    break
+        for arrival in range(paths[0].turns, turns + 1):
+            for i, path in enumerate(paths):
+                dep = arrival - path.turns + 1
+                if dep >= 1:
+                    nb = min(path.flow, missing)
+                    slots.append((dep, i, nb))
+                    missing -= nb
+                    if missing == 0:
+                        break
             if missing == 0:
                 break
+        slots.sort()
         plans: list[DronePlan] = []
-        for departure, path, count in slots:
-            for _ in range(count):
+        for dep, i, nb in slots:
+            for _ in range(nb):
                 plans.append(
-                    DronePlan(len(plans) + 1, path, departure)
+                    DronePlan(len(plans) + 1, paths[i], dep)
                 )
         return tuple(plans)
