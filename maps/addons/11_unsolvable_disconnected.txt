@@ -1,0 +1,12 @@
+# TEST: syntactically valid map with no route from start to goal
+# start reaches only 'island'; 'far' reaches goal but nothing reaches 'far'.
+# EXPECTED: no turn lines on stdout, a clear message on stderr saying no
+# route links start_hub and end_hub, exit status 1, no hang, no traceback.
+
+nb_drones: 2
+start_hub: start 0 0
+hub: island 1 0
+hub: far 2 1
+end_hub: goal 3 0
+connection: start-island
+connection: far-goal

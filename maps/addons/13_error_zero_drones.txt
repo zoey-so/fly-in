@@ -1,0 +1,11 @@
+# TEST: nb_drones must be a POSITIVE integer (subject VII.4)
+# EXPECTED: parse error naming the line of 'nb_drones: 0' (line 8 of this
+# file, counting these comment lines), e.g. "Line: 8 - nb_drones must be
+# positive integer not '0'", exit status 1, nothing on stdout.
+# FAILED BEFORE: 0 was accepted, giving the misleading
+# "no path links start_hub with end_hub".
+
+nb_drones: 0
+start_hub: start 0 0
+end_hub: goal 1 0
+connection: start-goal

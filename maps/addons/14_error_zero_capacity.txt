@@ -1,0 +1,12 @@
+# TEST: max_drones=0 on an ordinary hub is invalid (capacities are
+# positive integers, subject VII.4)
+# EXPECTED: parse error naming line 9 ('hub: mid'), exit status 1,
+# nothing on stdout.
+# FAILED BEFORE: accepted, giving "no path links start_hub with end_hub".
+
+nb_drones: 2
+start_hub: start 0 0
+hub: mid 1 0 [max_drones=0]
+end_hub: goal 2 0
+connection: start-mid
+connection: mid-goal

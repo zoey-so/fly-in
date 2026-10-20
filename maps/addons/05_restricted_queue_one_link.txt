@@ -1,0 +1,18 @@
+# TEST: drones queueing for a capacity-1 link into a restricted zone
+# (the subject's D1/D2 example). The link is busy only on the take-off turn,
+# so the next drone takes off on the turn the previous one lands.
+# EXPECTED: valid output, exactly 5 turns (one drone lands per turn).
+# A link wrongly blocked for both turns of a flight gives 7 turns.
+# One valid output:
+#   D1-start-gate
+#   D1-gate D2-start-gate
+#   D1-goal D2-gate D3-start-gate
+#   D2-goal D3-gate
+#   D3-goal
+
+nb_drones: 3
+start_hub: start 0 0
+hub: gate 1 0 [zone=restricted]
+end_hub: goal 2 0
+connection: start-gate
+connection: gate-goal

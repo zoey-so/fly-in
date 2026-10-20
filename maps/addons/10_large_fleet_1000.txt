@@ -1,0 +1,13 @@
+# TEST: many drones on a single-file route
+# 3-turn route, 1 drone per turn: 3 + 999 = 1002 turns.
+# EXPECTED: valid output, exactly 1002 lines, in well under a second.
+# The plan must not get slower per drone (no per-drone pathfinding).
+
+nb_drones: 1000
+start_hub: start 0 0
+hub: w1 1 0
+hub: w2 2 0
+end_hub: goal 3 0
+connection: start-w1
+connection: w1-w2
+connection: w2-goal

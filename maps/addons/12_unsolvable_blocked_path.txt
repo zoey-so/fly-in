@@ -1,0 +1,10 @@
+# TEST: the only route passes through a blocked zone
+# EXPECTED: same as the disconnected map: clear "no path" message on
+# stderr, exit status 1. The output must never contain 'wall'.
+
+nb_drones: 2
+start_hub: start 0 0
+hub: wall 1 0 [zone=blocked]
+end_hub: goal 2 0
+connection: start-wall
+connection: wall-goal

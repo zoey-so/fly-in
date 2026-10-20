@@ -1,0 +1,19 @@
+# TEST: scheduler with two lanes of different length
+# Lanes: start-fast-goal (2 turns) and start-slow1-slow2-slow3-goal (4 turns).
+# Optimal plan: 3 drones on the fast lane (take-off turns 1, 2, 3) and
+# 1 drone on the slow lane (take-off turn 1).
+# EXPECTED: valid output, exactly 4 turns (optimum, checked by brute force).
+
+nb_drones: 4
+start_hub: start 0 0
+hub: fast 1 1
+hub: slow1 1 -1
+hub: slow2 2 -1
+hub: slow3 3 -1
+end_hub: goal 4 0
+connection: start-fast
+connection: fast-goal
+connection: start-slow1
+connection: slow1-slow2
+connection: slow2-slow3
+connection: slow3-goal

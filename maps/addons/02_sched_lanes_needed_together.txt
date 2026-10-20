@@ -1,0 +1,29 @@
+# TEST: planner must keep adding lanes even when one more lane gives no gain
+# Lanes: start-wide-goal (2 turns, 3 drones per turn) and three separate
+# 3-turn lanes through b1/c1, b2/c2, b3/c3 (1 drone per turn each).
+# With the wide lane alone: 4 turns. Adding 1 or 2 slow lanes: still 4.
+# Adding all 3: 6 + 3 = 9 drones land by turn 3.
+# EXPECTED: valid output, exactly 3 turns. 4 turns means the planner
+# stopped at the first lane that did not improve the result.
+
+nb_drones: 9
+start_hub: start 0 0
+hub: wide 1 0 [max_drones=3]
+hub: b1 1 1
+hub: c1 2 1
+hub: b2 1 2
+hub: c2 2 2
+hub: b3 1 -1
+hub: c3 2 -1
+end_hub: goal 3 0
+connection: start-wide [max_link_capacity=3]
+connection: wide-goal [max_link_capacity=3]
+connection: start-b1
+connection: b1-c1
+connection: c1-goal
+connection: start-b2
+connection: b2-c2
+connection: c2-goal
+connection: start-b3
+connection: b3-c3
+connection: c3-goal

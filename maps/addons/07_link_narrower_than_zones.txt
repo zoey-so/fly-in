@@ -1,0 +1,13 @@
+# TEST: link capacity is the bottleneck, not zone capacity
+# big1 and big2 hold 3 drones, but big1-big2 carries only 1 drone per turn.
+# EXPECTED: valid output, exactly 8 turns (3-turn route + 5 more drones,
+# one per turn). Fewer turns means link capacity is ignored somewhere.
+
+nb_drones: 6
+start_hub: start 0 0
+hub: big1 1 0 [max_drones=3]
+hub: big2 2 0 [max_drones=3]
+end_hub: goal 3 0
+connection: start-big1 [max_link_capacity=3]
+connection: big1-big2
+connection: big2-goal [max_link_capacity=3]

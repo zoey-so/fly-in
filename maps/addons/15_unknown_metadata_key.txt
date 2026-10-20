@@ -1,0 +1,18 @@
+# TEST: unknown metadata key [speed=3]
+# Two acceptable behaviours - pick one and document it in the README:
+#   a) parse error naming line 15 ('hub: mid'), exit 1, empty stdout; or
+#   b) ignore the key with a warning on STDERR only; stdout must then be
+#      exactly these 3 turn lines (2-turn route, 2 drones):
+#        D1-mid
+#        D1-goal D2-mid
+#        D2-goal
+# EXPECTED (your current design, b): stdout contains ONLY turn lines.
+# FAILED BEFORE: the warning (plus "<_io.TextIOWrapper ...>") was printed
+# on stdout because sys.stderr was passed to print() without file=.
+
+nb_drones: 2
+start_hub: start 0 0
+hub: mid 1 0 [speed=3]
+end_hub: goal 2 0
+connection: start-mid
+connection: mid-goal

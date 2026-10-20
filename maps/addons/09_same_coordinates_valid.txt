@@ -1,0 +1,16 @@
+# TEST: two zones at the same coordinates are a VALID map
+# The subject requires unique names and integer coordinates, not unique
+# coordinates. 'up' and 'down' both sit at (1, 0).
+# EXPECTED: no error, valid output, exactly 2 turns (two parallel lanes).
+# The GUI may draw the two zones on top of each other; that is cosmetic.
+# FAILED BEFORE: "Line: 4 - Zone coordinates must be unique".
+
+nb_drones: 2
+start_hub: start 0 0
+hub: up 1 0
+hub: down 1 0
+end_hub: goal 2 0
+connection: start-up
+connection: up-goal
+connection: start-down
+connection: down-goal

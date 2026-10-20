@@ -1,0 +1,18 @@
+# TEST: the end hub itself is restricted (2-turn entry)
+# Each drone takes off from mid toward goal (token D<n>-mid-goal) and lands
+# on the next turn (token D<n>-goal). The mid-goal link has capacity 1.
+# EXPECTED: valid output, exactly 5 turns; every drone shows both its
+# take-off token and its landing token; no drone counted home on take-off.
+# One valid output:
+#   D1-mid
+#   D1-mid-goal D2-mid
+#   D1-goal D2-mid-goal D3-mid
+#   D2-goal D3-mid-goal
+#   D3-goal
+
+nb_drones: 3
+start_hub: start 0 0
+hub: mid 1 0 [max_drones=3]
+end_hub: goal 2 0 [zone=restricted]
+connection: start-mid [max_link_capacity=3]
+connection: mid-goal

@@ -1,0 +1,9 @@
+# TEST: max_drones on start_hub and end_hub must be ignored (subject VII.4)
+# The direct link carries 3 drones per turn, so all 3 arrive at once.
+# EXPECTED: no error, exactly 1 turn:
+#   D1-goal D2-goal D3-goal
+
+nb_drones: 3
+start_hub: start 0 0 [max_drones=1]
+end_hub: goal 1 0 [max_drones=1]
+connection: start-goal [max_link_capacity=3]

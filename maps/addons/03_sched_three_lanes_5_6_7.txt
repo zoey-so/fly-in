@@ -1,0 +1,42 @@
+# TEST: three disjoint lanes of 5, 6 and 7 turns, 12 drones
+# Drones landed by turn T: (T-4) + (T-5) + (T-6). T=8 gives 9, T=9 gives 12.
+# The simple bound "latency + N/throughput - 1" says 8, but 9 is the true
+# optimum because the extra lanes are longer.
+# EXPECTED: valid output, exactly 9 turns.
+
+nb_drones: 12
+start_hub: start 0 0
+hub: a1 1 1
+hub: a2 2 1
+hub: a3 3 1
+hub: a4 4 1
+hub: b1 1 0
+hub: b2 2 0
+hub: b3 3 0
+hub: b4 4 0
+hub: b5 5 0
+hub: c1 1 -1
+hub: c2 2 -1
+hub: c3 3 -1
+hub: c4 4 -1
+hub: c5 5 -1
+hub: c6 6 -1
+end_hub: goal 7 0
+connection: start-a1
+connection: a1-a2
+connection: a2-a3
+connection: a3-a4
+connection: a4-goal
+connection: start-b1
+connection: b1-b2
+connection: b2-b3
+connection: b3-b4
+connection: b4-b5
+connection: b5-goal
+connection: start-c1
+connection: c1-c2
+connection: c2-c3
+connection: c3-c4
+connection: c4-c5
+connection: c5-c6
+connection: c6-goal
