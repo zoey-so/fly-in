@@ -10,7 +10,7 @@ gui:
 	@uv run fly-in -gui ${MAP}
 
 debug:
-	@uv run -m pdb -m fly-in
+	@uv run -m pdb -m fly_in
 
 clean:
 	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true

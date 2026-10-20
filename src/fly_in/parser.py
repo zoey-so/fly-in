@@ -194,7 +194,7 @@ class MapParser:
     def _posint(s: str, n_line: int, what: str) -> int:
         try:
             res = int(s)
-            if res < 0:
+            if res <= 0:
                 raise ValueError()
             return res
         except ValueError:
