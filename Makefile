@@ -9,6 +9,9 @@ run:
 gui:
 	@uv run fly-in -gui ${MAP}
 
+bench:
+	for f in maps/*/*; do echo "$$f: "; uv run --quiet fly-in $$f | wc -l; done
+
 debug:
 	@uv run -m pdb -m fly_in
 
